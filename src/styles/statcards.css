@@ -1,0 +1,103 @@
+/* ===== StatCard - Neon Green (design refresh) ===== */
+.statcard{
+  --glow: color-mix(in oklab, var(--accent-1) 35%, transparent);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 1.2rem;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* soft corner glow */
+.statcard::after{
+  content:"";
+  position:absolute; inset:-1px;
+  background:
+    radial-gradient(420px 220px at 110% -10%, rgba(163,230,53,.09), transparent 60%);
+  pointer-events:none;
+  z-index: 0;
+}
+
+.statcard:hover{
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--glow);
+}
+
+/* header row */
+.statcard-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:.85rem; z-index:1; position:relative; }
+.statcard-icon{
+  width:46px; height:46px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  color:#0a0f0e; font-size:1.15rem; font-weight:700;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  box-shadow: 0 10px 24px rgba(11,37,18,.45);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.statcard:hover .statcard-icon{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(11,37,18,.55);
+}
+
+/* sheen on hover */
+.statcard-icon::after{
+  content:"";
+  position:absolute; inset:-2px; border-radius:16px;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.3) 22%, transparent 45%);
+  transform: translateX(-140%);
+  transition: transform .6s ease;
+  pointer-events:none;
+}
+.statcard:hover .statcard-icon::after{ transform: translateX(140%); }
+
+/* delta chip */
+.statcard-delta{
+  display:inline-flex; align-items:center; gap:.35rem;
+  padding:.35rem .6rem; border-radius:999px; font-weight:700; font-size:.82rem;
+  background: var(--pill-bg); color: var(--pill-text);
+}
+.statcard-delta.up   { background: color-mix(in oklab, var(--accent-1) 25%, transparent); }
+.statcard-delta.down { background: color-mix(in oklab, var(--neg) 25%, transparent); color:#fee; }
+.statcard-delta.flat { background: var(--glass-soft); color: var(--text-muted); }
+
+/* numbers/text */
+.statcard-body { position:relative; z-index:1; }
+.statcard-value{ font-size:2rem; font-weight:800; color:#fff; line-height:1; letter-spacing:.2px; }
+.statcard-label{ margin-top:.35rem; color:var(--text-muted); font-weight:600; }
+.statcard-hint { margin-top:.5rem; font-size:.85rem; color:var(--text-muted); opacity:.9; }
+
+/* ===== Little animations ===== */
+
+/* entrance (staggerable) */
+@keyframes card-in {
+  0%   { opacity: 0; transform: translateY(14px) scale(.98); filter: saturate(.9); }
+  100% { opacity: 1; transform: translateY(0)    scale(1);    filter: saturate(1); }
+}
+.statcard.animate-in{
+  animation: card-in .55s cubic-bezier(.22,.8,.22,1) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* tiny pulse on positive delta badge */
+@keyframes delta-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(163,230,53,.45); }
+  70%{ box-shadow: 0 0 0 10px rgba(163,230,53,0); }
+  100%{ box-shadow: 0 0 0 0 rgba(163,230,53,0); }
+}
+.statcard-delta.up { animation: delta-pulse 1.8s ease-out infinite; }
+
+/* optional: faint shimmer across the whole card on hover */
+.statcard::before{
+  content:"";
+  position:absolute; inset:-1px; border-radius: inherit;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.04) 18%, transparent 36%);
+  transform: translateX(-120%);
+  transition: transform .9s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.statcard:hover::before{ transform: translateX(120%); }

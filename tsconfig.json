@@ -1,0 +1,19 @@
+
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+    },
+    "types": ["node", "vite/client"],
+    "resolveJsonModule": true
+  },
+  "include": ["electron", "src", "vite.config.ts"]
+}

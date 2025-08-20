@@ -1,0 +1,60 @@
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: 
+    border-box; 
+}
+
+:root{
+  /* Background glow */
+  --bg-grad-1: rgba(15, 32, 24, 0.55);   /* deep forest haze */
+  --bg-grad-2: rgba(10, 22, 18, 0.75);   /* darker jade */
+  --bg-grad-3: #0a0f0e;                  /* near-black green */
+  --bg-grad-4: #121a16;                  /* charcoal-olive */
+
+  /* Glass surfaces (darker, greener) */
+  --glass-bg:     rgba(12, 20, 18, 0.55);
+  --glass-strong: rgba(12, 20, 18, 0.76);
+  --glass-soft:   rgba(255,255,255,0.035);
+  --glass-hover:  rgba(163, 230, 53, 0.12);  /* lime hover glow */
+  --glass-border: rgba(168, 185, 166, 0.14);
+
+  /* Typography */
+  --text:#e8f5e9;             /* soft mint white */
+  --text-muted:#9fb3a6;       /* sage */
+
+  /* Accents (neon-lime → emerald) */
+  --accent-1:#a3e635;   /* lime / highlight (like the picture pills) */
+  --accent-2:#22c55e;   /* emerald / secondary accent */
+
+  /* States */
+  --pos:#22c55e;        /* success (emerald) */
+  --warn:#f59e0b;       /* amber */
+  --info:#38bdf8;       /* cyan info chips */
+  --neg:#ef4444;        /* red */
+
+  /* Shape & elevation */
+  --radius-lg:18px;
+  --radius-md:12px;
+  --shadow-lg:0 10px 40px rgba(3, 16, 10, .55);
+  --shadow-xl:0 22px 70px rgba(3, 16, 10, .65);
+
+  /* Optional: card & badge helpers for this theme */
+  --card-bg: rgba(16, 24, 20, 0.72);
+  --card-border: rgba(170, 200, 170, 0.12);
+  --pill-bg: color-mix(in oklab, var(--accent-1) 18%, transparent);
+  --pill-text:#0a0f0e;
+}
+
+/* background with subtle green glows */
+body{
+  font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background:
+    radial-gradient(1200px 800px at -10% -10%, var(--bg-grad-1), transparent 60%),
+    radial-gradient(1200px 800px at 110% 110%, var(--bg-grad-2), transparent 60%),
+    linear-gradient(135deg, var(--bg-grad-3), var(--bg-grad-4));
+  background-attachment: fixed;
+  min-height:100vh;
+  color: var(--text);
+}
+

@@ -1,0 +1,57 @@
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: 
+    border-box; 
+}
+
+/* ---------- THEME: Obsidian Aurora ---------- */
+/* ---------- THEME: Midnight Blue ---------- */
+:root{
+  /* Background glow */
+  --bg-grad-1: rgba(8, 20, 47, 0.55);   /* navy haze */
+  --bg-grad-2: rgba(2, 12, 34, 0.75);   /* deep midnight */
+  --bg-grad-3: #050e23;                 /* near-black blue */
+  --bg-grad-4: #0b1b3a;                 /* inky blue */
+
+  /* Glass surfaces */
+  --glass-bg:     rgba(5, 16, 38, 0.55);
+  --glass-strong: rgba(5, 16, 38, 0.72);
+  --glass-soft:   rgba(255,255,255,0.04);
+  --glass-hover:  rgba(96,165,250,0.10);   /* soft blue hover */
+  --glass-border: rgba(148,163,184,0.14);  /* slate-ish border */
+
+  /* Typography */
+  --text:#ebffea;
+  --text-muted:#93a4bf;
+
+  /* Accents (royal → sky) */
+  --accent-1:#2563eb;   /* royal blue */
+  --accent-2:#38bdf8;   /* sky/cyan */
+
+  /* States */
+  --pos:#22c55e;
+  --warn:#f59e0b;
+  --info:#3b82f6;
+  --neg:#ef4444;
+
+  /* Shape & elevation */
+  --radius-lg:18px;
+  --radius-md:12px;
+  --shadow-lg:0 10px 40px rgba(2, 12, 34, .55);
+  --shadow-xl:0 22px 70px rgba(2, 12, 34, .65);
+}
+
+
+
+body{
+  font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* background: black; */
+  background:
+  radial-gradient(1100px 700px at -10% -10%, var(--bg-grad-1), transparent 60%),
+  radial-gradient(1100px 700px at 110% 110%, var(--bg-grad-2), transparent 60%),
+  linear-gradient(135deg, var(--bg-grad-3), var(--bg-grad-4));
+  background-attachment: fixed;
+  min-height:100vh;
+  color: var(--text);
+}

@@ -1,0 +1,148 @@
+/* ---------- SIDEBAR (Dark Glass) ---------- */
+.sidebar{
+  width: 280px;
+  height: 100vh;
+  background: var(--glass-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right:1px solid var(--glass-border);
+  padding:2rem 1.5rem;
+  position:relative;
+  overflow:auto;
+  color:var(--text);
+  box-shadow: var(--shadow-lg);
+  transition: width .18s ease, padding .18s ease;
+  justify-content: space-between;/
+}
+.sidebar::before{
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  pointer-events:none;
+}
+.logo{ display:flex; align-items:center; gap:1rem; margin-bottom:3rem; position:relative; z-index:1;  justify-content: space-between;}
+.logo-left{ display:flex; align-items:center; gap:1rem; }
+
+.collapse-btn{
+  border:none; background:transparent; color:var(--text-muted);
+  cursor:pointer; padding:.5rem; border-radius:10px;
+  font-size:1rem; line-height:1;
+  transition: opacity .15s ease, transform .15s ease, background .15s ease;
+}
+.collapse-btn:hover{
+  background: var(--glass-hover);
+  color: var(--text);
+}
+
+
+.logo-icon{
+  width:45px; height:45px; border-radius:12px;
+  background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.5rem;
+  
+}
+
+.logo-title{
+  font-size:1.5rem; font-weight:700;
+  padding: 4px;
+  /* If you want gradient-filled text, uncomment the next two lines: */ 
+}
+
+.nav-menu{ list-style:none; margin:0; padding:0; position:relative; z-index:1; }
+.nav-item{ margin-bottom:.5rem; }
+.nav-link{
+  display:flex; align-items:center; gap:1rem; padding:1rem;
+  text-decoration:none; color:var(--text-muted);
+  border-radius:12px; transition:all .25s ease; font-weight:500;
+  border:1px solid transparent;
+}
+.nav-link i{ width:20px; text-align:center; }
+.nav-link:hover{
+  background: var(--glass-hover);
+  color: var(--text);
+  transform: translateX(5px);
+  border-color: var(--glass-border);
+}
+
+.nav-link.active{
+  background: linear-gradient(45deg,
+              color-mix(in oklab, var(--accent-1) 25%, transparent),
+              color-mix(in oklab, var(--accent-2) 18%, transparent));
+  color:#eaf6ff;
+  border-color: color-mix(in oklab, var(--accent-2) 40%, var(--glass-border));
+  box-shadow: 0 10px 28px color-mix(in oklab, var(--accent-1) 28%, transparent);
+}
+
+
+/* In collapsed mode, hide the button by default and overlay it near the logo.
+   It will appear ONLY when hovering/focusing the logo area. */
+.is-collapsed .collapse-btn{
+  position: absolute;
+  right: 8px;                    /* sits inside the narrow bar */
+  top: 50%;
+  transform: translateY(-50%) translateX(6px); /* slightly tucked */
+  opacity: 0;
+  pointer-events: none;          /* not clickable until revealed */
+}
+
+/* Reveal on hover or keyboard focus within the logo area */
+.is-collapsed .logo:hover .collapse-btn,
+.is-collapsed .logo:focus-within .collapse-btn{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* When collapsed, hide the text (you already have these) */
+.is-collapsed { width: 84px; padding: 1rem .75rem; }
+.is-collapsed .logo-title, .is-collapsed .nav-label { display: none; }
+.is-collapsed .nav-link { justify-content: center; gap:0; }
+.is-collapsed .nav-link i { width:auto; }
+
+/* Optional: slightly enlarge the chevron so it's an obvious affordance */
+.is-collapsed .collapse-btn i{
+  font-size: 1.1rem;
+}
+
+/* Optional collapsed state */
+.is-collapsed { width: 84px; padding: 1rem .75rem; }
+.is-collapsed .logo-title, .is-collapsed .nav-label { display: none; }
+.is-collapsed .nav-link { justify-content: center; }
+.is-collapsed .nav-link i { width:auto; } /* let the icon center nicely */
+
+/* Optional: show tooltip on collapsed (browser default via title attr) */
+.is-collapsed .nav-link { position: relative; }
+
+/* Optional: slightly enlarge the chevron so it's an obvious affordance */
+.is-collapsed .collapse-btn i{
+  font-size: 1.1rem;
+}
+
+/* Hide logo content when collapsed */
+.is-collapsed .logo-left {
+  display: none;
+}
+
+/* Keep the logo container as a hover target */
+.is-collapsed .logo {
+  justify-content: center;     /* center the hover area */
+  height: 48px;                /* fixed hover zone, tweak as you like */
+}
+
+/* Button stays hidden until hover/focus (as before) */
+.is-collapsed .collapse-btn{
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.is-collapsed .logo:hover .collapse-btn,
+.is-collapsed .logo:focus-within .collapse-btn{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
+}
+
+

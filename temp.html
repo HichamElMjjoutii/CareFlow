@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MediCare Pro - Doctor Dashboard</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+
+
+<style>
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: 
+    border-box; 
+}
+/* ---------- THEME ---------- */
+:root{
+  --bg-grad-1:#dcf0d350;
+  --bg-grad-2:#4b296d;
+  --bg-grad-3:#43015e;
+  --bg-grad-4:#5b06b6;
+  --glass-bg: rgba(0,0,0,0.45);
+  --glass-strong: rgba(0,0,0,0.6);
+  --glass-soft: rgba(255,255,255,0.06);
+  --glass-hover: rgba(255,255,255,0.1);
+  --glass-border: rgba(255,255,255,0.1);
+  --text:#ffffff;
+  --text-muted:#b6b8c3;
+  --accent-1:#667eea; /* indigo */
+  --accent-2:#764ba2; /* purple */
+  --pos:#10b981;   /* green */
+  --warn:#f59e0b;  /* amber */
+  --info:#3b82f6;  /* blue */
+  --neg:#ef4444;   /* red */
+  --radius-lg:20px;
+  --radius-md:15px;
+  --shadow-lg:0 10px 40px rgba(0,0,0,.35);
+  --shadow-xl:0 20px 60px rgba(0,0,0,.45);
+}
+
+body{
+  font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: black;
+  min-height:100vh;
+  color:var(--text);
+}
+
+.dashboard{ display:grid; grid-template-columns:280px 1fr; min-height:100vh; }
+
+/* ---------- SIDEBAR (Dark Glass) ---------- */
+.sidebar{
+  background:var(--glass-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right:1px solid var(--glass-border);
+  padding:2rem 1.5rem;
+  position:relative;
+  overflow:hidden;
+  color:var(--text);
+  box-shadow: var(--shadow-lg);
+}
+.sidebar::before{
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  pointer-events:none;
+}
+.logo{ display:flex; align-items:center; gap:1rem; margin-bottom:3rem; }
+.logo-icon{
+  width:45px; height:45px; border-radius:12px;
+  background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.5rem;
+}
+.logo h1{
+  font-size:1.5rem; font-weight:700;
+  background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+  /* -webkit-background-clip:text; -webkit-text-fill-color:transparent; */
+}
+
+.nav-menu{ list-style:none; }
+.nav-item{ margin-bottom:.5rem; }
+.nav-link{
+  display:flex; align-items:center; gap:1rem; padding:1rem;
+  text-decoration:none; color:var(--text-muted);
+  border-radius:12px; transition:all .25s ease; font-weight:500;
+  border:1px solid transparent;
+}
+.nav-link i{ width:20px; text-align:center; }
+.nav-link:hover{
+  background: var(--glass-hover); color:var(--text);
+  transform: translateX(5px);
+  border-color: var(--glass-border);
+}
+.nav-link.active{
+  background: linear-gradient(45deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2));
+  color:#fff; border-color: var(--glass-border);
+  box-shadow: 0 8px 25px rgba(118,75,162,0.25);
+}
+
+/* ---------- MAIN ---------- */
+.main-content{
+  padding:2rem;
+  background: transparent;
+  backdrop-filter: blur(6px);
+  overflow-y:auto;
+}
+
+/* Header (Glass) */
+.header{
+  display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;
+  background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  padding:1.5rem 2rem; border-radius: var(--radius-lg);
+  border:1px solid var(--glass-border); box-shadow: var(--shadow-lg);
+}
+.welcome{ flex:1; }
+.welcome h2{ font-size:2rem; font-weight:700; color:#fff; margin-bottom:.5rem; }
+.welcome p{ color:var(--text-muted); font-size:1.05rem; }
+.header-actions{ display:flex; gap:1rem; align-items:center; }
+
+/* Search */
+.search-box{ position:relative; }
+.search-box input{
+  background: var(--glass-soft);
+  border:1px solid var(--glass-border);
+  border-radius:15px;
+  padding:.8rem 1rem .8rem 3rem;
+  width:300px; font-size:.95rem; color:#fff;
+  transition: all .25s ease;
+}
+.search-box input::placeholder{ color:#9aa0ad; }
+.search-box input:focus{
+  outline:none; border-color: var(--accent-1); background: rgba(255,255,255,0.12);
+  box-shadow: 0 0 0 3px rgba(102,126,234,.15);
+}
+.search-box i{ position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:#9aa0ad; }
+
+/* Notifications */
+.notification-bell{
+  position:relative; background: var(--glass-soft); border:1px solid var(--glass-border);
+  border-radius:12px; padding:.8rem; cursor:pointer; transition:all .25s ease; color:#fff;
+}
+.notification-bell:hover{ background: var(--glass-hover); transform: translateY(-2px); }
+.notification-badge{
+  position:absolute; top:-5px; right:-5px; background: var(--neg); color:#fff; border-radius:50%;
+  width:20px; height:20px; font-size:.7rem; display:flex; align-items:center; justify-content:center;
+}
+
+/* ---------- STATS ---------- */
+.stats-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; margin-bottom:2rem; }
+.stat-card{
+  background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  padding:2rem; border-radius: var(--radius-lg);
+  border:1px solid var(--glass-border); box-shadow: var(--shadow-lg);
+  transition:transform .25s ease, box-shadow .25s ease; position:relative; overflow:hidden;
+}
+.stat-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:4px;
+  background: linear-gradient(45deg, var(--card-color), var(--card-color-light));
+}
+.stat-card:hover{ transform: translateY(-5px); box-shadow: var(--shadow-xl); }
+
+.stat-card.patients{ --card-color:#3b82f6; --card-color-light:#60a5fa; }
+.stat-card.appointments{ --card-color:#10b981; --card-color-light:#34d399; }
+.stat-card.revenue{ --card-color:#f59e0b; --card-color-light:#fbbf24; }
+.stat-card.satisfaction{ --card-color:#ef4444; --card-color-light:#f87171; }
+
+.stat-header{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
+.stat-icon{
+  width:60px; height:60px; border-radius:16px; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:1.5rem;
+  background: linear-gradient(45deg, var(--card-color), var(--card-color-light));
+  box-shadow: 0 8px 25px rgba(0,0,0,.35);
+}
+.stat-value{ font-size:2.5rem; font-weight:700; color:#fff; line-height:1; }
+.stat-label{ color:var(--text-muted); font-weight:500; margin-top:.5rem; }
+.stat-change{ display:flex; align-items:center; gap:.25rem; font-size:.85rem; font-weight:600; margin-top:.5rem; }
+.stat-change.positive{ color:var(--pos); }
+.stat-change.negative{ color:var(--neg); }
+
+/* ---------- CARDS & LISTS ---------- */
+.content-grid{ display:grid; grid-template-columns:2fr 1fr; gap:2rem; margin-bottom:2rem; }
+
+.card{
+  background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-radius: var(--radius-lg); padding:2rem; border:1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg); transition: box-shadow .25s ease;
+}
+.card:hover{ box-shadow: var(--shadow-xl); }
+
+.card-header{
+  display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;
+  padding-bottom:1rem; border-bottom:1px solid var(--glass-border);
+}
+.card-title{ font-size:1.25rem; font-weight:700; color:#fff; }
+.view-all{ color: var(--accent-1); text-decoration:none; font-weight:600; transition:all .25s ease; }
+.view-all:hover{ color: var(--accent-2); transform: translateX(3px); }
+
+/* Appointments */
+.appointment-item{
+  display:flex; align-items:center; gap:1rem; padding:1rem;
+  background: rgba(255,255,255,0.03);
+  border:1px solid var(--glass-border);
+  border-radius:15px; margin-bottom:1rem; transition: all .25s ease;
+}
+.appointment-item:hover{ background: rgba(255,255,255,0.06); transform: translateX(5px); }
+.patient-avatar{
+  width:50px; height:50px; border-radius:12px;
+  background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+  display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:1.1rem;
+}
+.appointment-info{ flex:1; }
+.patient-name{ font-weight:600; color:#fff; margin-bottom:.25rem; }
+.appointment-time{ color:var(--text-muted); font-size:.9rem; }
+.appointment-status{ padding:.5rem 1rem; border-radius:8px; font-size:.8rem; font-weight:700; border:1px solid transparent; }
+.status-confirmed{ background: rgba(16,185,129,0.12); border-color:#10b981; color:#10b981; }
+.status-pending{ background: rgba(234,179,8,0.12); border-color:#facc15; color:#facc15; }
+.status-completed{ background: rgba(59,130,246,0.12); border-color:#3b82f6; color:#3b82f6; }
+
+/* Quick Actions */
+.quick-actions{ display:grid; gap:1rem; }
+.action-btn{
+  display:flex; align-items:center; gap:1rem; padding:1.5rem;
+  background: var(--glass-soft);
+  border:1px solid var(--glass-border); border-radius:15px; cursor:pointer;
+  transition: all .25s ease; text-align:left; width:100%; color:#fff;
+}
+.action-btn:hover{
+  background: var(--glass-hover); transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(102,126,234,.25);
+}
+.action-icon{
+  width:45px; height:45px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,0.08); transition: all .25s ease;
+}
+.action-btn:hover .action-icon{ background: rgba(255,255,255,0.15); }
+.action-text h4{ font-weight:600; margin-bottom:.25rem; }
+.action-text p{ color:var(--text-muted); font-size:.9rem; }
+.action-btn:hover .action-text p{ color:#e6e7ee; }
+
+/* Bottom grid */
+.bottom-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+
+/* Patients */
+.patient-list{ max-height:400px; overflow-y:auto; }
+.patient-item{
+  display:flex; align-items:center; gap:1rem; padding:1rem 0;
+  border-bottom:1px solid var(--glass-border); transition: all .25s ease;
+}
+.patient-item:hover{
+  background: rgba(255,255,255,0.04);
+  margin:0 -1rem; padding:1rem; border-radius:12px;
+}
+.patient-details{ flex:1; }
+.patient-condition{ color:var(--text-muted); font-size:.9rem; }
+.patient-actions{ display:flex; gap:.5rem; }
+.action-icon-btn{
+  width:35px; height:35px; border:none; border-radius:8px;
+  background: var(--glass-soft); color:#e3e6ee; cursor:pointer; transition: all .25s ease;
+  display:flex; align-items:center; justify-content:center; border:1px solid var(--glass-border);
+}
+.action-icon-btn:hover{ background: var(--glass-hover); color:#fff; }
+/* ---------- TOAST ---------- */
+.toast{
+  position:fixed; bottom:24px; right:24px; background:#111827; color:#fff; padding:12px 16px;
+  border-radius:12px; box-shadow: var(--shadow-xl); opacity:0; transform: translateY(10px);
+  transition: opacity .25s ease, transform .25s ease; pointer-events:none; z-index:9999;
+}
+.toast.show{ opacity:1; transform: translateY(0);}
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1024px){
+  .dashboard{ grid-template-columns:1fr; }
+  .sidebar{ display:none; }
+  .content-grid{ grid-template-columns:1fr; }
+  .bottom-grid{ grid-template-columns:1fr; }
+}
+@media (max-width:768px){
+  .header{ flex-direction:column; gap:1rem; }
+  .search-box input{ width:100%; }
+  .stats-grid{ grid-template-columns:1fr; }
+}
+/* ---------- SCROLLBAR ---------- */
+::-webkit-scrollbar{ width:8px; }
+::-webkit-scrollbar-track{ background: rgba(255,255,255,.06); }
+::-webkit-scrollbar-thumb{ background: rgba(102,126,234,.35); border-radius:4px; }
+::-webkit-scrollbar-thumb:hover{ background: rgba(102,126,234,.55); }
+</style>
+
+</head>
+<body>
+<div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+            <h1>MediCare Pro</h1>
+        </div>
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="#" class="nav-link active"><i class="fas fa-chart-pie"></i>Dashboard</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-users"></i>Patients</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-calendar-alt"></i>Appointments</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-file-medical"></i>Medical Records</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-pills"></i>Prescriptions</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-chart-line"></i>Analytics</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-cog"></i>Settings</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="welcome">
+                <h2>Welcome back, Dr. Johnson</h2>
+                <p>Here's what's happening in your practice today</p>
+            </div>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input id="searchInput" type="text" placeholder="Search patients, appointments...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <button class="notification-bell" id="notifBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notifBadge">3</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card patients">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">1,248</div>
+                        <div class="stat-label">Total Patients</div>
+                        <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +12% from last month</div>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                </div>
+            </div>
+
+            <div class="stat-card appointments">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">38</div>
+                        <div class="stat-label">Today's Appointments</div>
+                        <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +5% from yesterday</div>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                </div>
+            </div>
+
+            <div class="stat-card revenue">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">$24,500</div>
+                        <div class="stat-label">Monthly Revenue</div>
+                        <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +18% from last month</div>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                </div>
+            </div>
+
+            <div class="stat-card satisfaction">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">Patient Satisfaction</div>
+                        <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +0.2 from last month</div>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Today's Appointments -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Today's Appointments</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="appointment-list" id="apptList">
+                    <div class="appointment-item">
+                        <div class="patient-avatar">JS</div>
+                        <div class="appointment-info">
+                            <div class="patient-name">John Smith</div>
+                            <div class="appointment-time">9:00 AM - Regular Checkup</div>
+                        </div>
+                        <div class="appointment-status status-confirmed">Confirmed</div>
+                    </div>
+                    <div class="appointment-item">
+                        <div class="patient-avatar">MD</div>
+                        <div class="appointment-info">
+                            <div class="patient-name">Maria Davis</div>
+                            <div class="appointment-time">10:30 AM - Follow-up</div>
+                        </div>
+                        <div class="appointment-status status-pending">Pending</div>
+                    </div>
+                    <div class="appointment-item">
+                        <div class="patient-avatar">RW</div>
+                        <div class="appointment-info">
+                            <div class="patient-name">Robert Wilson</div>
+                            <div class="appointment-time">2:00 PM - Consultation</div>
+                        </div>
+                        <div class="appointment-status status-confirmed">Confirmed</div>
+                    </div>
+                    <div class="appointment-item">
+                        <div class="patient-avatar">LB</div>
+                        <div class="appointment-info">
+                            <div class="patient-name">Lisa Brown</div>
+                            <div class="appointment-time">3:30 PM - Lab Results</div>
+                        </div>
+                        <div class="appointment-status status-completed">Completed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Quick Actions</h3>
+                </div>
+                <div class="quick-actions">
+                    <button class="action-btn" data-action="New Appointment">
+                        <div class="action-icon"><i class="fas fa-plus"></i></div>
+                        <div class="action-text">
+                            <h4>New Appointment</h4>
+                            <p>Schedule a new patient appointment</p>
+                        </div>
+                    </button>
+                    <button class="action-btn" data-action="Add Patient">
+                        <div class="action-icon"><i class="fas fa-user-plus"></i></div>
+                        <div class="action-text">
+                            <h4>Add Patient</h4>
+                            <p>Register a new patient</p>
+                        </div>
+                    </button>
+                    <button class="action-btn" data-action="Write Prescription">
+                        <div class="action-icon"><i class="fas fa-prescription"></i></div>
+                        <div class="action-text">
+                            <h4>Write Prescription</h4>
+                            <p>Create new prescription</p>
+                        </div>
+                    </button>
+                    <button class="action-btn" data-action="Medical Records">
+                        <div class="action-icon"><i class="fas fa-file-medical-alt"></i></div>
+                        <div class="action-text">
+                            <h4>Medical Records</h4>
+                            <p>View patient history</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Grid -->
+        <div class="bottom-grid">
+            <!-- Recent Patients -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Patients</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="patient-list" id="patientList">
+                    <div class="patient-item">
+                        <div class="patient-avatar">AS</div>
+                        <div class="patient-details">
+                            <div class="patient-name">Alice Smith</div>
+                            <div class="patient-condition">Hypertension - Last visit: 2 days ago</div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-icon-btn"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+                    <div class="patient-item">
+                        <div class="patient-avatar">MJ</div>
+                        <div class="patient-details">
+                            <div class="patient-name">Michael Johnson</div>
+                            <div class="patient-condition">Diabetes - Last visit: 1 week ago</div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-icon-btn"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+                    <div class="patient-item">
+                        <div class="patient-avatar">SK</div>
+                        <div class="patient-details">
+                            <div class="patient-name">Sarah Kim</div>
+                            <div class="patient-condition">Annual Checkup - Last visit: 3 days ago</div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-icon-btn"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Performance Metrics</h3>
+                </div>
+                <div style="display: grid; gap: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color:#6b7280; font-weight:500;">Appointment Completion Rate</span>
+                        <span style="font-weight:700; color:#10b981;">94%</span>
+                    </div>
+                    <div style="background:#f3f4f6; height:8px; border-radius:4px; overflow:hidden;">
+                        <div style="background: linear-gradient(45deg,#10b981,#34d399); height:100%; width:94%; border-radius:4px;"></div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color:#6b7280; font-weight:500;">Patient Satisfaction Score</span>
+                        <span style="font-weight:700; color:#3b82f6;">4.9/5</span>
+                    </div>
+                    <div style="background:#f3f4f6; height:8px; border-radius:4px; overflow:hidden;">
+                        <div style="background: linear-gradient(45deg,#3b82f6,#60a5fa); height:100%; width:98%; border-radius:4px;"></div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color:#6b7280; font-weight:500;">Revenue Growth</span>
+                        <span style="font-weight:700; color:#f59e0b;">+18%</span>
+                    </div>
+                    <div style="background:#f3f4f6; height:8px; border-radius:4px; overflow:hidden;">
+                        <div style="background: linear-gradient(45deg,#f59e0b,#fbbf24); height:100%; width:78%; border-radius:4px;"></div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color:#6b7280; font-weight:500;">Clinic Utilization</span>
+                        <span style="font-weight:700; color:#8b5cf6;">82%</span>
+                    </div>
+                    <div style="background:#f3f4f6; height:8px; border-radius:4px; overflow:hidden;">
+                        <div style="background: linear-gradient(45deg,#8b5cf6,#a78bfa); height:100%; width:82%; border-radius:4px;"></div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color:#6b7280; font-weight:500;">Average Wait Time</span>
+                        <span style="font-weight:700; color:#ef4444;">11 min</span>
+                    </div>
+                    <div style="background:#f3f4f6; height:8px; border-radius:4px; overflow:hidden;">
+                        <div style="background: linear-gradient(45deg,#ef4444,#f87171); height:100%; width:55%; border-radius:4px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Action completed</div>
+
+<script>
+    // Sidebar active state
+    document.getElementById('navMenu').addEventListener('click', (e) => {
+        const link = e.target.closest('.nav-link');
+        if (!link) return;
+        [...document.querySelectorAll('.nav-link')].forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+        e.preventDefault();
+    });
+
+    // Notification badge clear
+    const notifBtn = document.getElementById('notifBtn');
+    const notifBadge = document.getElementById('notifBadge');
+    notifBtn.addEventListener('click', () => {
+        showToast('No new notifications');
+        notifBadge.textContent = '0';
+        notifBadge.style.display = 'none';
+    });
+
+    // Search filter (patients + appointments)
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+        const q = searchInput.value.toLowerCase().trim();
+
+        document.querySelectorAll('#patientList .patient-item').forEach(item => {
+            const text = item.innerText.toLowerCase();
+            item.style.display = text.includes(q) ? '' : 'none';
+        });
+
+        document.querySelectorAll('#apptList .appointment-item').forEach(item => {
+            const text = item.innerText.toLowerCase();
+            item.style.display = text.includes(q) ? '' : 'none';
+        });
+    });
+
+    // Quick actions → toast
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const action = btn.getAttribute('data-action') || 'Action';
+            showToast(`${action} – opening…`);
+        });
+    });
+
+    // Toast helper
+    let toastTimer;
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+    }
+</script>
+</body>
+</html>
