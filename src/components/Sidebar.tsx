@@ -2,14 +2,14 @@ import React, { useEffect, useMemo, useState } from 'react';
 import '../styles/Sidebar.css';
 
 export type NavItem = {
-  id: string;
-  label: string;
-  icon: string;   // e.g. "fas fa-chart-pie"
-  href?: string;
-  title?: string; // optional: tooltip when collapsed
+  id    : string;
+  label : string;
+  icon  : string;   // e.g. "fas fa-chart-pie"
+  href? : string;
+  title?: string;   // optional: tooltip when collapsed
 };
 
-export type SidebarProps = {
+export type SidebarProps = {  
   items: NavItem[];
   activeId?: string;
   onSelect?: (id: string) => void; 

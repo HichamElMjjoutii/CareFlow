@@ -1,0 +1,68 @@
+/* container grid */
+.quick-actions{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  grid-template-columns: repeat(var(--qa-cols, 1), minmax(0, 1fr));
+}
+
+/* responsive: auto-fit to two columns on medium+ if not forced */
+
+
+.action-btn{
+  display:flex; align-items:center; gap:1rem; padding:1.2rem 1.1rem;
+  background: var(--glass-soft);
+  border:1px solid var(--glass-border); border-radius:15px;
+  cursor:pointer; transition: all .25s ease; text-align:left; width:100%; color:#fff;
+  position: relative; isolation: isolate;
+  text-decoration: none; /* for anchors */
+}
+
+/* subtle neon sheen on hover */
+.action-btn::after{
+  content:""; position:absolute; inset:-1px; border-radius:inherit;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.06) 20%, transparent 40%);
+  transform: translateX(-120%); transition: transform .8s ease; pointer-events:none; z-index:0;
+}
+.action-btn:hover::after{ transform: translateX(120%); }
+
+.action-btn:hover{
+  background: var(--glass-hover); transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  border-color: color-mix(in oklab, var(--accent-1) 28%, var(--glass-border));
+}
+
+.action-icon{
+  width:45px; height:45px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  color:#0a0f0e; font-weight:800; font-size:1.05rem;
+  box-shadow: 0 8px 20px rgba(11,37,18,.45);
+  transition: transform .25s ease, box-shadow .25s ease;
+  z-index:1;
+}
+.action-btn:hover .action-icon{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(11,37,18,.55);
+}
+
+.action-text{ z-index:1; }
+.action-text h4{ font-weight:700; margin-bottom:.25rem; color:#fff; }
+.action-text p{ color:var(--text-muted); font-size:.9rem; }
+.action-btn:hover .action-text p{ color:#e6e7ee; }
+
+/* Entrance animation (stagger with --delay) */
+@keyframes qa-in {
+  0% { opacity:0; transform: translateY(10px) scale(.99); }
+  100% { opacity:1; transform: translateY(0) scale(1); }
+}
+.animate-in{
+  animation: qa-in .45s cubic-bezier(.22,.8,.22,1) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Focus state for a11y */
+.action-btn:focus-visible{
+  outline: 3px solid rgba(163,230,53,.35);
+  outline-offset: 2px;
+}

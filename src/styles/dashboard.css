@@ -1,0 +1,14 @@
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr ; /* appointments bigger, actions smaller */
+  gap: 7rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+
+/* Responsive fallback: stack them on small screens */
+@media (max-width: 900px) {
+  .dashboard-row {
+    grid-template-columns: 2fr;
+  }
+}

@@ -4,3 +4,4 @@ build
 .env
 *.log
 themesHistory.txt
+temp.html

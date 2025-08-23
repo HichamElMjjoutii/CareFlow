@@ -22,8 +22,8 @@ export default function App() {
     { id: 'records',       label: 'Medical Records',icon: 'fas fa-file-medical' },
     { id: 'prescriptions', label: 'Prescriptions',  icon: 'fas fa-pills' },
     { id: 'analytics',     label: 'Analytics',      icon: 'fas fa-chart-line' },
-    { id: 'users',         label: 'Users',          icon: 'fas fa-user-friends' }, // FA fix
-    { id: 'ai perks',         label: 'Ai Perks',          icon: 'fa fa-cube' },
+    { id: 'staff',         label: 'Staff',          icon: 'fas fa-user-friends' }, // FA fix
+    { id: 'ai perks',      label: 'Ai Perks',    icon: 'fa fa-cube' },
   ];
 
   return (
