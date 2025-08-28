@@ -68,7 +68,7 @@
 .statcard-body { position:relative; z-index:1; }
 .statcard-value{ font-size:2rem; font-weight:800; color:#fff; line-height:1; letter-spacing:.2px; }
 .statcard-label{ margin-top:.35rem; color:var(--text-muted); font-weight:600; }
-.statcard-hint { margin-top:.5rem; font-size:.85rem; color:var(--text-muted); opacity:.9; }
+.statcard-hint { margin-top:.5rem; font-size:.85rem; color:var(--info); opacity:.9; }
 
 /* ===== Little animations ===== */
 

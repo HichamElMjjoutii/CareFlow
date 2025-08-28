@@ -1,18 +1,22 @@
 /* ---------- SIDEBAR (Dark Glass) ---------- */
 .sidebar{
   width: 280px;
-  height: 100vh;
+  height: 100dvh;      /* was 100vh */
+  position: sticky;    /* stick to viewport */
+  top: 0;
+  align-self: start;   /* needed for sticky inside grid */
+  overflow: auto;      /* its own scrollbar if content is long */
   background: var(--glass-strong);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-right:1px solid var(--glass-border);
   padding:2rem 1.5rem;
-  position:relative;
   overflow:auto;
   color:var(--text);
   box-shadow: var(--shadow-lg);
   transition: width .18s ease, padding .18s ease;
   justify-content: space-between;/
+  
 }
 .sidebar::before{
   content:""; position:absolute; inset:0;

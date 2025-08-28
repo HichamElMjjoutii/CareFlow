@@ -1,0 +1,101 @@
+/* Card wrapper tweaks */
+.pm-card { overflow: hidden; }
+.pm-list { display: grid; gap: 1.1rem; }
+
+/* Each metric row */
+.pm-item{
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: .9rem;
+  position: relative;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.pm-item:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in oklab, var(--accent-1) 22%, var(--glass-border));
+}
+
+/* Header row inside item */
+.pm-top{
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:.6rem;
+}
+.pm-title{ display:flex; align-items:center; gap:.6rem; flex-wrap: wrap; }
+.pm-label{ color: var(--text-muted); font-weight:700; letter-spacing:.2px; }
+.pm-value{ font-weight:800; color:#fff; }
+
+/* Trend chip */
+.trend{
+  display:inline-flex; align-items:center; gap:.35rem;
+  padding:.25rem .5rem; border-radius: 999px; font-weight:700; font-size:.78rem;
+  border:1px solid var(--glass-border); background: var(--glass-soft); color:#e9fbe9;
+}
+.trend i{ font-size:.8rem; }
+.trend.up    { color:#cffecc; background: rgba(16,185,129,.12); border-color:#10b981; }
+.trend.down  { color:#ffe1e1; background: rgba(239,68,68,.12);  border-color:#ef4444; }
+.trend.flat  { color:#eaeffb; background: rgba(99,102,241,.10); border-color:#4f46e5; }
+
+/* Bar + sparkline layout */
+.pm-barwrap{
+  display:grid;
+  grid-template-columns: 1fr auto; /* bar + mini sparkline */
+  align-items:center;
+  gap: .75rem;
+}
+
+/* Track */
+.pm-bartrack{
+  position: relative;
+  height: 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
+}
+
+/* Fill with glow, stripes, and end-cap */
+.pm-barfill{
+  position: relative;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,.25),
+    0 0 16px color-mix(in oklab, var(--accent-1) 24%, transparent);
+  transition: width .6s cubic-bezier(.22,.8,.22,1);
+}
+.pm-stripes{
+  position:absolute; inset:0;
+  background: repeating-linear-gradient(45deg,
+    rgba(255,255,255,.15) 0, rgba(255,255,255,.15) 8px,
+    transparent 8px, transparent 16px);
+  mix-blend-mode: overlay;
+  opacity:.25;
+  animation: pm-stripe-move 3s linear infinite;
+}
+@keyframes pm-stripe-move{
+  from{ transform: translateX(0); }
+  to  { transform: translateX(32px); }
+}
+
+/* glowing end cap */
+.pm-cap{
+  position:absolute; right:-6px; top:50%;
+  width:14px; height:14px; border-radius:50%;
+  transform: translateY(-50%);
+  background: #fff;
+  box-shadow:
+    0 0 0 4px rgba(255,255,255,.25),
+    0 0 18px color-mix(in oklab, var(--accent-1) 30%, transparent);
+}
+
+/* Sparkline (tiny area chart) */
+.pm-spark{ filter: drop-shadow(0 2px 8px rgba(0,0,0,.25)); border-radius: 6px; }
+
+/* Entrance animation */
+@keyframes pm-item-in{
+  0% { opacity:0; transform: translateY(10px) scale(.99); }
+  100%{ opacity:1; transform: translateY(0) scale(1); }
+}
+.animate-in{ animation: pm-item-in .5s cubic-bezier(.22,.8,.22,1) both; animation-delay: var(--delay, 0ms); }

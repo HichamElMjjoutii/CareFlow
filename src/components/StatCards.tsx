@@ -54,6 +54,7 @@ const StatCard: React.FC<StatCardProps> = ({
         <div className="statcard-label">{label}</div>
         {hint && <div className="statcard-hint">{hint}</div>}
       </div>
+      
     </div>
   );
 };
